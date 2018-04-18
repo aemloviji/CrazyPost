@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CrazyPost.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrazyPost.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class PostController : Controller
     {
+        public IPostRepository PostRepo { get; set; }
+
+        public PostController(IPostRepository _repo)
+        {
+            PostRepo = _repo;
+        }
+
+
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            var postList = await PostRepo.GetAll();
+            return Ok(postList);
         }
 
         // GET api/values/5
