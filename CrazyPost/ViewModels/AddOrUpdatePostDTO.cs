@@ -1,5 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CrazyPost.Models
 {
@@ -7,7 +8,7 @@ namespace CrazyPost.Models
     public class AddOrUpdatePostDTO
     {
         public string Text { get; set; }
-
+  
         public string CreatedBy { get; set; }
 
         public DateTime InsertDate { get; set; }

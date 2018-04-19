@@ -60,7 +60,7 @@ namespace CrazyPost.Controllers
             var postItem = Convertor.ToComment(formData);
             await CommentRepo.Add(postItem);
 
-            return CreatedAtRoute("CommentRepo", new { Controller = "Comment", id = postItem.Id }, postItem);
+            return CreatedAtRoute("GetComment", new { Controller = "Comment", id = postItem.Id }, postItem);
         }
 
         [HttpPut("{id}")]

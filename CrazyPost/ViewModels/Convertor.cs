@@ -93,7 +93,9 @@ namespace CrazyPost.ViewModels
             {
                 Id = id,
                 Text = item.Text,
-                InsertDate = DateTime.Now
+                InsertDate = DateTime.Now,
+
+                PostId = item.PostId
             };
         }
         #endregion
