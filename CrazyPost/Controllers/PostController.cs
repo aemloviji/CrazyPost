@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CrazyPost.Models;
 using CrazyPost.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace CrazyPost.Controllers
 {
@@ -17,8 +15,6 @@ namespace CrazyPost.Controllers
             PostRepo = _repo;
         }
 
-
-        // GET api/values
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -26,29 +22,50 @@ namespace CrazyPost.Controllers
             return Ok(postList);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{id}", Name = "GetPost")]
+        public async Task<IActionResult> GetById(int id)
         {
-            return "value";
+            var item = await PostRepo.Find(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return Ok(item);
         }
 
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Create([FromBody] Post item)
         {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+            await PostRepo.Add(item);
+            return CreatedAtRoute("GetContact", new { Controller = "Post", id = item.ID }, item);
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> Update(int id, [FromBody] Post item)
         {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+            var contactObj = await PostRepo.Find(id);
+            if (contactObj == null)
+            {
+                return NotFound();
+            }
+            await PostRepo.Update(item);
+            return NoContent();
         }
 
-        // DELETE api/values/5
+
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            await PostRepo.Remove(id);
+            return NoContent();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace CrazyPost.Context
     public static class DbInitializer
     {
 
-        public static void Initialize(CrazyPostContext context)
+        public static void Initialize(ApiDbContext context)
         {
             // Look for any posts.
             if (context.Post.Any())
@@ -32,7 +32,8 @@ namespace CrazyPost.Context
                 new Post {
                     Text ="Ruby on Rails. Imagine what you could build if you learned ",
                     CreatedBy ="aemloviji",
-                    InsertDate = DateTime.Now
+                    InsertDate = DateTime.Now,
+
                 }
             };
 
@@ -48,22 +49,22 @@ namespace CrazyPost.Context
                 new Comment {
                     Text ="I'm glad to introduce you new MS Azure",
                     InsertDate = DateTime.Now,
-                    PostId= 1
+                    PostId=1
                 },
                 new Comment {
                     Text ="Cloud services is very trend now",
                     InsertDate = DateTime.Now,
-                    PostId= 1
+                    PostId=1
                 },
                 new Comment {
                     Text ="I'm glad to introduce you new features of Spring Framework",
                     InsertDate = DateTime.Now,
-                    PostId= 2
+                    PostId=2
                 },
                 new Comment {
                     Text ="I'm glad to introduce you new features in ROR development",
                     InsertDate = DateTime.Now,
-                    PostId= 3
+                    PostId=3
                 }
             };
 

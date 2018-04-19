@@ -10,7 +10,7 @@ using System;
 
 namespace CrazyPost.Migrations
 {
-    [DbContext(typeof(CrazyPostContext))]
+    [DbContext(typeof(Contexts.ApiDbContext))]
     partial class CrazyPostContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

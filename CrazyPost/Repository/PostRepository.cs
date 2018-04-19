@@ -10,9 +10,9 @@ namespace CrazyPost.Repository
 {
     public class PostRepository : IPostRepository
     {
-        CrazyPostContext _context;
+        private readonly ApiDbContext _context;
 
-        public PostRepository(CrazyPostContext context)
+        public PostRepository(ApiDbContext context)
         {
             _context = context;
         }

@@ -10,7 +10,7 @@ using System;
 
 namespace CrazyPost.Migrations
 {
-    [DbContext(typeof(CrazyPostContext))]
+    [DbContext(typeof(Contexts.ApiDbContext))]
     [Migration("20180418173708_Initial")]
     partial class Initial
     {

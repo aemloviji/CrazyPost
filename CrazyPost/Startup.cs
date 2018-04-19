@@ -1,10 +1,14 @@
-﻿using CrazyPost.Contexts;
+﻿using CrazyPost.Context;
+using CrazyPost.Contexts;
+using CrazyPost.Models;
 using CrazyPost.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace CrazyPost
 {
@@ -20,17 +24,28 @@ namespace CrazyPost
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CrazyPostContext>(options => 
+            //it can be used if we want to use localDb as DB. Connection string already has been added
+            services.AddDbContext<Contexts.ApiDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("CrazyPostContext")));
+            //services.AddDbContext<ApiDbContext>(opt => opt.UseInMemoryDatabase());
 
+            services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMvc();
+
+
+
             //using Dependency Injection
-            services.AddSingleton<IPostRepository, PostRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApiDbContext dbContext, ILoggerFactory logFactory)
         {
+            logFactory.AddConsole(Configuration.GetSection("Logging"));
+            logFactory.AddDebug();
+
+            DbInitializer.Initialize(dbContext);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -38,5 +53,7 @@ namespace CrazyPost
 
             app.UseMvc();
         }
+
+
     }
 }

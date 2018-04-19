@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CrazyPost.Contexts
 {
-    public class CrazyPostContext : DbContext
+    public class ApiDbContext : DbContext
     {
-        public CrazyPostContext(DbContextOptions<CrazyPostContext> options)
+        public ApiDbContext(DbContextOptions<ApiDbContext> options)
             : base(options) { }
-        public CrazyPostContext() { }
+        //public ApiDbContext() { }
 
         public DbSet<Post> Post { get; set; }
         public DbSet<Comment> Comment { get; set; }

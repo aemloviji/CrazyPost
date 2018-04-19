@@ -19,6 +19,7 @@ namespace CrazyPost.Models
         public DateTime UpdateDate { get; set; }
 
 
-        public virtual ICollection<Comment> Comment { get; set; }
+        //public virtual ICollection<Comment> Comment { get; set; }
+        public List<Comment> Comment { get; set; }
     }
 }
