@@ -8,44 +8,44 @@ using System.Threading.Tasks;
 namespace CrazyPost.Controllers
 {
     [Route("api/[controller]")]
-    public class PostController : Controller
+    public class CommentController : Controller
     {
-        public IPostRepository PostRepo { get; set; }
+        public ICommentRepository CommentRepo { get; set; }
 
-        public PostController(IPostRepository _repo)
+        public CommentController(ICommentRepository _repo)
         {
-            PostRepo = _repo;
+            CommentRepo = _repo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var postList = await PostRepo.GetAll();
+            var commentList = await CommentRepo.GetAll();
 
-            var resultModel = new List<PostEnhanceDTO>();
-            foreach (var item in postList)
+            var resultModel = new List<CommentEnhanceDTO>();
+            foreach (var item in commentList)
             {
-                resultModel.Add(Convertor.ToPostEnhanceDTO(item));
+                resultModel.Add(Convertor.ToCommentEnhanceDTO(item));
             }
 
             return Ok(resultModel);
         }
 
-        [HttpGet("{id}", Name = "GetPost")]
+        [HttpGet("{id}", Name = "GetComment")]
         public async Task<IActionResult> GetById(int id)
         {
-            var item = await PostRepo.Find(id);
+            var item = await CommentRepo.Find(id);
             if (item == null)
             {
                 return NotFound();
             }
 
-            var resultModel = Convertor.ToPostEnhanceDTO(item);
+            var resultModel = Convertor.ToCommentEnhanceDTO(item);
             return Ok(resultModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AddOrUpdatePostDTO formData)
+        public async Task<IActionResult> Create([FromBody] AddOrUpdateCommentDTO formData)
         {
             if (formData == null)
             {
@@ -57,28 +57,28 @@ namespace CrazyPost.Controllers
                 return BadRequest(ModelState);
             }
 
-            var resultModel = Convertor.ToPost(formData);
-            await PostRepo.Add(resultModel);
+            var postItem = Convertor.ToComment(formData);
+            await CommentRepo.Add(postItem);
 
-            return CreatedAtRoute("GetPost", new { Controller = "Post", id = resultModel.Id }, resultModel);
+            return CreatedAtRoute("CommentRepo", new { Controller = "Comment", id = postItem.Id }, postItem);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] AddOrUpdatePostDTO formData)
+        public async Task<IActionResult> Update(int id, [FromBody] AddOrUpdateCommentDTO formData)
         {
             if (formData == null)
             {
                 return BadRequest();
             }
 
-            var contactObj = await PostRepo.Find(id);
+            var contactObj = await CommentRepo.Find(id);
             if (contactObj == null)
             {
                 return NotFound();
             }
 
-            var postItem = Convertor.ToPost(formData, id);
-            await PostRepo.Update(id, postItem);
+            var postItem = Convertor.ToComment(formData, id);
+            await CommentRepo.Update(id, postItem);
 
             return NoContent();
         }
@@ -87,7 +87,7 @@ namespace CrazyPost.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await PostRepo.Remove(id);
+            await CommentRepo.Remove(id);
             return NoContent();
         }
     }

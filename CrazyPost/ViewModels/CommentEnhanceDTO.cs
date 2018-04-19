@@ -3,6 +3,6 @@ namespace CrazyPost.Models
 {
     public class CommentEnhanceDTO: CommentRawDTO
     {
-        public PostDTO Post { get; set; }
+        public PostRawDTO Post { get; set; }
     }
 }

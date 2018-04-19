@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CrazyPost.Models
 {
     [ModelMetadataType(typeof(Post))]
-    public class PostAddOrUpdateDTO
+    public class AddOrUpdatePostDTO
     {
         public string Text { get; set; }
 

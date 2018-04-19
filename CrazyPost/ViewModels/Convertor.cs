@@ -1,12 +1,14 @@
 ﻿using CrazyPost.Models;
+using System;
 
 namespace CrazyPost.ViewModels
 {
     public static class Convertor
     {
-        public static PostDTO ToPostDTO(Post item)
+        #region post entity convertors
+        public static PostEnhanceDTO ToPostEnhanceDTO(Post item)
         {
-            var result = new PostDTO
+            var result = new PostEnhanceDTO
             {
                 Id = item.Id,
                 CreatedBy = item.CreatedBy,
@@ -23,7 +25,21 @@ namespace CrazyPost.ViewModels
             return result;
         }
 
-        public static Post ToPost(PostDTO item)
+        public static PostRawDTO ToPostRawDTO(Post item)
+        {
+            var result = new PostRawDTO
+            {
+                Id = item.Id,
+                CreatedBy = item.CreatedBy,
+                Text = item.Text,
+                InsertDate = item.InsertDate,
+                UpdateDate = item.UpdateDate,
+            };
+
+            return result;
+        }
+
+        public static Post ToPost(PostEnhanceDTO item)
         {
             return new Post
             {
@@ -36,7 +52,7 @@ namespace CrazyPost.ViewModels
         }
 
 
-        public static Post ToPost(PostAddOrUpdateDTO item, int id = 0)
+        public static Post ToPost(AddOrUpdatePostDTO item, int id = 0)
         {
             return new Post
             {
@@ -47,7 +63,9 @@ namespace CrazyPost.ViewModels
                 UpdateDate = item.UpdateDate
             };
         }
+        #endregion
 
+        #region comment entity convertors
         public static CommentRawDTO ToCommentRawDTO(Comment item)
         {
             return new CommentRawDTO
@@ -65,8 +83,21 @@ namespace CrazyPost.ViewModels
                 Id = item.Id,
                 Text = item.Text,
                 InsertDate = item.InsertDate,
-                //Post = item.Post
+                Post = ToPostRawDTO(item.Post)
             };
         }
+
+        public static Comment ToComment(AddOrUpdateCommentDTO item, int id = 0)
+        {
+            return new Comment
+            {
+                Id = id,
+                Text = item.Text,
+                InsertDate = DateTime.Now
+            };
+        }
+        #endregion
+
+
     }
 }
