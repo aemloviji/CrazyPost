@@ -41,7 +41,7 @@ namespace CrazyPost.Controllers
                 return BadRequest();
             }
             await PostRepo.Add(item);
-            return CreatedAtRoute("GetContact", new { Controller = "Post", id = item.ID }, item);
+            return CreatedAtRoute("GetPost", new { Controller = "Post", id = item.ID }, item);
         }
 
         [HttpPut("{id}")]
@@ -56,7 +56,7 @@ namespace CrazyPost.Controllers
             {
                 return NotFound();
             }
-            await PostRepo.Update(item);
+            await PostRepo.Update(id, item);
             return NoContent();
         }
 

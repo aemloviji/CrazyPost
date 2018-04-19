@@ -46,12 +46,12 @@ namespace CrazyPost.Repository
             }
         }
 
-        public async Task Update(Post item)
+        public async Task Update(int id, Post item)
         {
-            var itemToUpdate = await _context.Post.SingleOrDefaultAsync(m => m.ID == item.ID);
+            var itemToUpdate = await _context.Post.SingleOrDefaultAsync(m => m.ID == id);
             if (itemToUpdate != null)
             {
-                itemToUpdate.Comment = item.Comment;
+                itemToUpdate.Text = item.Text;
                 itemToUpdate.CreatedBy = item.CreatedBy;
                 itemToUpdate.UpdateDate = DateTime.Now;
                 await _context.SaveChangesAsync();

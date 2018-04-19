@@ -10,7 +10,7 @@ namespace CrazyPost.Repository
         Task<IEnumerable<Post>> GetAll();
         Task<Post> Find(int id);
         Task Remove(int id);
-        Task Update(Post item);
+        Task Update(int id, Post item);
 
     }
 }
