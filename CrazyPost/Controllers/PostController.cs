@@ -2,7 +2,7 @@
 using CrazyPost.Repository;
 using CrazyPost.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CrazyPost.Controllers
@@ -21,7 +21,14 @@ namespace CrazyPost.Controllers
         public async Task<IActionResult> GetAll()
         {
             var postList = await PostRepo.GetAll();
-            return Ok(postList);
+
+            var postDTOList = new List<PostDTO>();
+            foreach (var item in postList)
+            {
+                postDTOList.Add(Convertor.ToPostDTO(item));
+            }
+
+            return Ok(postDTOList);
         }
 
         [HttpGet("{id}", Name = "GetPost")]
@@ -34,7 +41,6 @@ namespace CrazyPost.Controllers
             }
 
             var postDto = Convertor.ToPostDTO(item);
-
             return Ok(postDto);
         }
 

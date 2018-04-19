@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CrazyPost.Contexts;
 using CrazyPost.Models;
@@ -26,16 +25,15 @@ namespace CrazyPost.Repository
         public async Task<Post> Find(int id)
         {
             return await _context.Post
-                .Where(e => e.Id == id)
-                .SingleOrDefaultAsync();
+                .Include(c => c.Comments)
+                .SingleOrDefaultAsync(e => e.Id == id);
         }
 
 
         public async Task<IEnumerable<Post>> GetAll()
         {
             return await _context.Post
-                .Include(c => c.Comments)
-                
+                .Include(c => c.Comments)                
                 .ToListAsync();
         }
 

@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CrazyPost.Models
 {
-    [ModelMetadataType(typeof(Post))]
     public class PostDTO
     {
+        public PostDTO()
+        {
+            Comments = new List<CommentRawDTO>();
+        }
+
         public int Id { get; set; }
 
         public string Text { get; set; }
@@ -15,5 +19,7 @@ namespace CrazyPost.Models
         public DateTime InsertDate { get; set; }
 
         public DateTime UpdateDate { get; set; }
+
+        public List<CommentRawDTO> Comments { get; set; }
     }
 }

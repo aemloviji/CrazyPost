@@ -6,14 +6,21 @@ namespace CrazyPost.ViewModels
     {
         public static PostDTO ToPostDTO(Post item)
         {
-            return new PostDTO
+            var result = new PostDTO
             {
                 Id = item.Id,
                 CreatedBy = item.CreatedBy,
                 Text = item.Text,
                 InsertDate = item.InsertDate,
-                UpdateDate = item.UpdateDate
+                UpdateDate = item.UpdateDate,
             };
+
+            foreach (var comment in item.Comments)
+            {
+                result.Comments.Add(ToCommentRawDTO(comment));
+            }
+
+            return result;
         }
 
         public static Post ToPost(PostDTO item)
@@ -41,7 +48,25 @@ namespace CrazyPost.ViewModels
             };
         }
 
+        public static CommentRawDTO ToCommentRawDTO(Comment item)
+        {
+            return new CommentRawDTO
+            {
+                Id = item.Id,
+                Text = item.Text,
+                InsertDate = item.InsertDate
+            };
+        }
 
-
+        public static CommentEnhanceDTO ToCommentEnhanceDTO(Comment item)
+        {
+            return new CommentEnhanceDTO
+            {
+                Id = item.Id,
+                Text = item.Text,
+                InsertDate = item.InsertDate,
+                //Post = item.Post
+            };
+        }
     }
 }
