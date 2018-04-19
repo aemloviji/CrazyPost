@@ -61,7 +61,7 @@ namespace CrazyPost.Migrations
             modelBuilder.Entity("CrazyPost.Models.Comment", b =>
                 {
                     b.HasOne("CrazyPost.Models.Post", "Post")
-                        .WithMany("Comment")
+                        .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -7,7 +7,7 @@ namespace CrazyPost.Contexts
     {
         public ApiDbContext(DbContextOptions<ApiDbContext> options)
             : base(options) { }
-        //public ApiDbContext() { }
+        public ApiDbContext() { }
 
         public DbSet<Post> Post { get; set; }
         public DbSet<Comment> Comment { get; set; }

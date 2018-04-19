@@ -33,7 +33,10 @@ namespace CrazyPost.Repository
 
         public async Task<IEnumerable<Post>> GetAll()
         {
-            return await _context.Post.ToListAsync();
+            return await _context.Post
+                .Include(c => c.Comments)
+                
+                .ToListAsync();
         }
 
         public async Task Remove(int id)

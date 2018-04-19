@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace CrazyPost
 {
@@ -23,7 +25,12 @@ namespace CrazyPost
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
 
             //it can be used if we want to use localDb as DB. Connection string already has been added
             services.AddDbContext<ApiDbContext>(options =>

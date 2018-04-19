@@ -1,6 +1,8 @@
 ﻿using CrazyPost.Models;
 using CrazyPost.Repository;
+using CrazyPost.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace CrazyPost.Controllers
@@ -30,13 +32,16 @@ namespace CrazyPost.Controllers
             {
                 return NotFound();
             }
-            return Ok(item);
+
+            var postDto = Convertor.ToPostDTO(item);
+
+            return Ok(postDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Post item)
-        {     
-            if (item == null)
+        public async Task<IActionResult> Create([FromBody] PostAddOrUpdateDTO formData)
+        {
+            if (formData == null)
             {
                 return BadRequest();
             }
@@ -46,23 +51,29 @@ namespace CrazyPost.Controllers
                 return BadRequest(ModelState);
             }
 
-            await PostRepo.Add(item);
-            return CreatedAtRoute("GetPost", new { Controller = "Post", id = item.Id }, item);
+            var postItem = Convertor.ToPost(formData);
+            await PostRepo.Add(postItem);
+
+            return CreatedAtRoute("GetPost", new { Controller = "Post", id = postItem.Id }, postItem);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Post item)
+        public async Task<IActionResult> Update(int id, [FromBody] PostAddOrUpdateDTO formData)
         {
-            if (item == null)
+            if (formData == null)
             {
                 return BadRequest();
             }
+
             var contactObj = await PostRepo.Find(id);
             if (contactObj == null)
             {
                 return NotFound();
             }
-            await PostRepo.Update(id, item);
+
+            var postItem = Convertor.ToPost(formData, id);
+            await PostRepo.Update(id, postItem);
+
             return NoContent();
         }
 
