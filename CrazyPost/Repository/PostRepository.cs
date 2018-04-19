@@ -26,7 +26,7 @@ namespace CrazyPost.Repository
         public async Task<Post> Find(int id)
         {
             return await _context.Post
-                .Where(e => e.ID == id)
+                .Where(e => e.Id == id)
                 .SingleOrDefaultAsync();
         }
 
@@ -38,7 +38,7 @@ namespace CrazyPost.Repository
 
         public async Task Remove(int id)
         {
-            var itemToRemove = await _context.Post.SingleOrDefaultAsync(m => m.ID == id);
+            var itemToRemove = await _context.Post.SingleOrDefaultAsync(m => m.Id == id);
             if (itemToRemove != null)
             {
                 _context.Post.Remove(itemToRemove);
@@ -48,7 +48,7 @@ namespace CrazyPost.Repository
 
         public async Task Update(int id, Post item)
         {
-            var itemToUpdate = await _context.Post.SingleOrDefaultAsync(m => m.ID == id);
+            var itemToUpdate = await _context.Post.SingleOrDefaultAsync(m => m.Id == id);
             if (itemToUpdate != null)
             {
                 itemToUpdate.Text = item.Text;

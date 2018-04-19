@@ -35,13 +35,19 @@ namespace CrazyPost.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Post item)
-        {
+        {     
             if (item == null)
             {
                 return BadRequest();
             }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             await PostRepo.Add(item);
-            return CreatedAtRoute("GetPost", new { Controller = "Post", id = item.ID }, item);
+            return CreatedAtRoute("GetPost", new { Controller = "Post", id = item.Id }, item);
         }
 
         [HttpPut("{id}")]

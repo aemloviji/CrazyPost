@@ -27,7 +27,7 @@ namespace CrazyPost.Context
                 new Post {
                      Text ="Spring Framework. The right stack for the right job",
                      CreatedBy ="aemloviji",
-                    InsertDate = DateTime.Now.AddDays(-2)
+                     InsertDate = DateTime.Now.AddDays(-2)
                 },
                 new Post {
                     Text ="Ruby on Rails. Imagine what you could build if you learned ",

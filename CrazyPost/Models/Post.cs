@@ -6,12 +6,12 @@ namespace CrazyPost.Models
 {
     public class Post
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
-        [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
+        [Required]
         public string Text { get; set; }
 
-        [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
+        [Required]
         public string CreatedBy { get; set; }
 
         public DateTime InsertDate { get; set; }

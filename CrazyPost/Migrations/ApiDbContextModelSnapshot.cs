@@ -10,11 +10,10 @@ using System;
 
 namespace CrazyPost.Migrations
 {
-    [DbContext(typeof(Contexts.ApiDbContext))]
-    [Migration("20180418173708_Initial")]
-    partial class Initial
+    [DbContext(typeof(ApiDbContext))]
+    partial class ApiDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,18 +40,20 @@ namespace CrazyPost.Migrations
 
             modelBuilder.Entity("CrazyPost.Models.Post", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
 
                     b.Property<DateTime>("InsertDate");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .IsRequired();
 
                     b.Property<DateTime>("UpdateDate");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Post");
                 });
