@@ -17,9 +17,12 @@ namespace CrazyPost.ViewModels
                 UpdateDate = item.UpdateDate,
             };
 
-            foreach (var comment in item.Comments)
+            if (item.Comments != null)
             {
-                result.Comments.Add(ToCommentRawDTO(comment));
+                foreach (var comment in item.Comments)
+                {
+                    result.Comments.Add(ToCommentRawDTO(comment));
+                }
             }
 
             return result;

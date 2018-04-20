@@ -1,6 +1,7 @@
 ﻿using CrazyPost.Contexts;
 using CrazyPost.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CrazyPost.Context
@@ -10,14 +11,32 @@ namespace CrazyPost.Context
 
         public static void Initialize(ApiDbContext context)
         {
-            // Look for any posts.
             if (context.Post.Any())
             {
                 return;   // DB has been seeded
             }
 
+            //Add some data to post table to play with them
+            var posts = GenerateListOfPost();
+            foreach (Post post in posts)
+            {
+                context.Post.Add(post);
+            }
+            context.SaveChanges();
 
-            var posts = new Post[]
+            //Add some data to comment table to play with them
+            var comments = GenerateListOfComment();
+            foreach (Comment comment in comments)
+            {
+                context.Comment.Add(comment);
+            }
+            context.SaveChanges();
+        }
+
+
+        public static List<Post> GenerateListOfPost()
+        {
+            var postList = new List<Post>
             {
                 new Post {
                     Text ="Microsoft Azure. Turn your ideas into solutions faster using a trusted cloud that is designed for you",
@@ -37,15 +56,14 @@ namespace CrazyPost.Context
                 }
             };
 
-            foreach (Post post in posts)
-            {
-                context.Post.Add(post);
-            }
-            context.SaveChanges();
+            return postList;
+        }
 
 
-            var comments = new Comment[]
-            {
+        public static List<Comment> GenerateListOfComment()
+        {
+            var commentList = new List<Comment>
+             {
                 new Comment {
                     Text ="I'm glad to introduce you new MS Azure",
                     InsertDate = DateTime.Now,
@@ -66,15 +84,9 @@ namespace CrazyPost.Context
                     InsertDate = DateTime.Now,
                     PostId=3
                 }
-            };
+             };
 
-            foreach (Comment comment in comments)
-            {
-                context.Comment.Add(comment);
-            }
-            context.SaveChanges();
-
+            return commentList;
         }
-
     }
 }
