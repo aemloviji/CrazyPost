@@ -5,6 +5,7 @@ using CrazyPost.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -79,6 +80,46 @@ namespace CrazyPost.Test
 
             BadRequestObjectResult result = actionResult as BadRequestObjectResult;
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public async Task Create_ShouldReturn_CreatedPost()
+        {
+            const string TEXT = "Unit Test Post goes here...";
+
+            #region Arrange
+            int id = 1;
+            var testPost = new Post()
+            {
+                Id = 1,
+                Text = TEXT,
+                CreatedBy="aemloviji",
+                InsertDate = DateTime.Now,
+            };
+
+            var mockRepo = new Mock<IPostRepository>();
+            mockRepo.Setup(repo => repo.Find(id))
+                .Returns(Task.FromResult(testPost));
+            var controller = new PostController(mockRepo.Object);
+
+            var newPost = new AddOrUpdatePostDTO()
+            {
+                Text = TEXT,
+                CreatedBy = "aemloviji",
+                InsertDate = DateTime.Now,
+            };
+            mockRepo.Setup(repo => repo.Add(testPost))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            #endregion
+
+
+            var actionResult = await controller.Create(newPost);
+            Assert.IsInstanceOfType(actionResult, typeof(CreatedAtRouteResult));
+
+            var okResult = actionResult as CreatedAtRouteResult;
+            Assert.IsInstanceOfType(okResult.Value, typeof(Post));
+            Assert.AreEqual(TEXT, (okResult.Value as Post).Text);
         }
 
     }

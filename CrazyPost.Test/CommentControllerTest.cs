@@ -5,6 +5,7 @@ using CrazyPost.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -83,10 +84,44 @@ namespace CrazyPost.Test
 
 
 
+        [TestMethod]
+        public async Task Create_ShouldReturn_CreatedComment()
+        {
+            const string TEXT = "Unit Test comments goes here...";
+
+            #region Arrange
+            int id = 1;
+            var testComment = new Comment()
+            {
+                Id = 1,
+                Text = TEXT,
+                PostId = 1,
+                InsertDate = DateTime.Now,
+            };
+
+            var mockRepo = new Mock<ICommentRepository>();
+            mockRepo.Setup(repo => repo.Find(id))
+                .Returns(Task.FromResult(testComment));
+            var controller = new CommentController(mockRepo.Object);
+
+            var newComment = new AddOrUpdateCommentDTO()
+            {
+                Text = TEXT,
+                PostId = 1,
+            };
+            mockRepo.Setup(repo => repo.Add(testComment))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            #endregion
 
 
+            var actionResult = await controller.Create(newComment);
+            Assert.IsInstanceOfType(actionResult, typeof(CreatedAtRouteResult));
 
-
+            var okResult = actionResult as CreatedAtRouteResult;
+            Assert.IsInstanceOfType(okResult.Value, typeof(Comment));
+            Assert.AreEqual(TEXT, (okResult.Value as Comment).Text);
+        }
 
     }
 }

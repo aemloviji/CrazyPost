@@ -8,7 +8,6 @@ namespace CrazyPost.Context
 {
     public static class DbInitializer
     {
-
         public static void Initialize(ApiDbContext context)
         {
             if (context.Post.Any())
@@ -52,7 +51,6 @@ namespace CrazyPost.Context
                     Text ="Ruby on Rails. Imagine what you could build if you learned ",
                     CreatedBy ="aemloviji",
                     InsertDate = DateTime.Now,
-
                 }
             };
 
