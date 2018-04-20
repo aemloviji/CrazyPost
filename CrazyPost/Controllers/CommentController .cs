@@ -32,8 +32,13 @@ namespace CrazyPost.Controllers
         }
 
         [HttpGet("{id}", Name = "GetComment")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var item = await CommentRepo.Find(id);
             if (item == null)
             {
@@ -61,18 +66,18 @@ namespace CrazyPost.Controllers
             await CommentRepo.Add(postItem);
 
             return CreatedAtRoute("GetComment", new { Controller = "Comment", id = postItem.Id }, postItem);
+
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] AddOrUpdateCommentDTO formData)
+        public async Task<IActionResult> Update([FromRoute]int id, [FromBody] AddOrUpdateCommentDTO formData)
         {
             if (formData == null)
             {
                 return BadRequest();
             }
 
-            var contactObj = await CommentRepo.Find(id);
-            if (contactObj == null)
+            if (!CommentExists(id).Result)
             {
                 return NotFound();
             }
@@ -85,10 +90,31 @@ namespace CrazyPost.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!CommentExists(id).Result)
+            {
+                return NotFound();
+            }
+
             await CommentRepo.Remove(id);
             return NoContent();
+        }
+
+
+        private async Task<bool> CommentExists(int id)
+        {
+            var result = await CommentRepo.Find(id);
+
+            if (result == null)
+                return false;
+
+            return true;
         }
     }
 }

@@ -32,8 +32,13 @@ namespace CrazyPost.Controllers
         }
 
         [HttpGet("{id}", Name = "GetPost")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById([FromRoute]int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var item = await PostRepo.Find(id);
             if (item == null)
             {
@@ -47,11 +52,6 @@ namespace CrazyPost.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddOrUpdatePostDTO formData)
         {
-            if (formData == null)
-            {
-                return BadRequest();
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -64,15 +64,14 @@ namespace CrazyPost.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] AddOrUpdatePostDTO formData)
+        public async Task<IActionResult> Update([FromRoute]int id, [FromBody] AddOrUpdatePostDTO formData)
         {
-            if (formData == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
-            var contactObj = await PostRepo.Find(id);
-            if (contactObj == null)
+            if (!PostExists(id).Result)
             {
                 return NotFound();
             }
@@ -85,10 +84,31 @@ namespace CrazyPost.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute]int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!PostExists(id).Result)
+            {
+                return NotFound();
+            }
+
             await PostRepo.Remove(id);
             return NoContent();
+        }
+
+
+        private async Task<bool> PostExists(int id)
+        {
+            var result = await PostRepo.Find(id);
+
+            if (result == null)
+                return false;
+
+            return true;
         }
     }
 }
