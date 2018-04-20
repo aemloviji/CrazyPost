@@ -86,7 +86,7 @@ namespace CrazyPost.ViewModels
                 Id = item.Id,
                 Text = item.Text,
                 InsertDate = item.InsertDate,
-                Post = ToPostRawDTO(item.Post)
+                Post = item.Post != null ? ToPostRawDTO(item.Post) : new PostRawDTO()
             };
         }
 
