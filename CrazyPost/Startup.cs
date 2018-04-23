@@ -1,5 +1,4 @@
-﻿using CrazyPost.Context;
-using CrazyPost.Contexts;
+﻿using CrazyPost.Contexts;
 using CrazyPost.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NJsonSchema;
+using NSwag.AspNetCore;
+using System.Reflection;
 
 namespace CrazyPost
 {
@@ -52,6 +54,13 @@ namespace CrazyPost
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseStaticFiles();
+            // Enable the Swagger UI middleware and the Swagger generator
+            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
+            {
+                settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
+            });
 
             app.UseMvc();
         }
