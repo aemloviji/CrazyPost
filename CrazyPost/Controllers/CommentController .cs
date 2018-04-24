@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CrazyPost.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class CommentController : Controller
     {
@@ -17,7 +18,12 @@ namespace CrazyPost.Controllers
             CommentRepo = _repo;
         }
 
+        /// <summary>
+        /// Returns all Comment
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(List<Comment>), 200)]
         public async Task<IActionResult> GetAll()
         {
             var commentList = await CommentRepo.GetAll();
@@ -31,7 +37,16 @@ namespace CrazyPost.Controllers
             return Ok(resultModel);
         }
 
+
+        /// <summary>
+        /// Returns Comment by given id
+        /// </summary>
+        /// <param name="id">id of Comment to return</param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetComment")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(CommentEnhanceDTO), 200)]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -49,7 +64,14 @@ namespace CrazyPost.Controllers
             return Ok(resultModel);
         }
 
+        /// <summary>
+        /// Creates new Comment with given values
+        /// </summary>
+        /// <param name="formData">new Comment entity values</param>
+        /// <returns>A newly created Comment</returns>
         [HttpPost]
+        [ProducesResponseType(typeof(Comment), 201)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Create([FromBody] AddOrUpdateCommentDTO formData)
         {
             if (formData == null)
@@ -69,7 +91,16 @@ namespace CrazyPost.Controllers
 
         }
 
+        /// <summary>
+        /// Updates a specific Comment.
+        /// </summary>
+        /// <param name="id">id of entity to be updated</param>
+        /// <param name="formData">updatable values</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(204)]
         public async Task<IActionResult> Update([FromRoute]int id, [FromBody] AddOrUpdateCommentDTO formData)
         {
             if (formData == null)
@@ -89,7 +120,14 @@ namespace CrazyPost.Controllers
         }
 
 
+        /// <summary>
+        /// Deletes a specific Comment.
+        /// </summary>
+        /// <param name="id">id of Comment entity</param>     
         [HttpDelete("{id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(204)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)
