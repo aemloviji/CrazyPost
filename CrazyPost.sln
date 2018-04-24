@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrazyPost", "CrazyPost\CrazyPost.csproj", "{C7F0FE35-DAB6-4E21-AE5A-0DB3A0B04901}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrazyPost", "src\CrazyPost.csproj", "{C7F0FE35-DAB6-4E21-AE5A-0DB3A0B04901}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrazyPost.Test", "CrazyPost.Test\CrazyPost.Test.csproj", "{AD606288-9DD4-46FA-8B9F-84164CF94B4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrazyPost.Test", "test\CrazyPost.Test.csproj", "{AD606288-9DD4-46FA-8B9F-84164CF94B4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
