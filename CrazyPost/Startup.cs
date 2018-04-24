@@ -8,9 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema;
-using NSwag.AspNetCore;
-using System.Reflection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace CrazyPost
 {
@@ -42,11 +40,43 @@ namespace CrazyPost
             //using Dependency Injection
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "CrazyPost API",
+                    Description = "ASP.NET Core Web API",
+                    //TermsOfService = "None",
+                    Contact = new Contact
+                    {
+                        Name = "Elvin Asadov",
+                        Email = "AEMLoviji@GMail.com",
+                        Url = "https://www.linkedin.com/in/elvin-asadov"
+                    },
+                    License = new License
+                    {
+                        Name = "MIT License",
+                        Url = "https://opensource.org/licenses/MIT"
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
         {
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
+
             logFactory.AddConsole(Configuration.GetSection("Logging"));
             logFactory.AddDebug();
 
@@ -54,13 +84,6 @@ namespace CrazyPost
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseStaticFiles();
-            // Enable the Swagger UI middleware and the Swagger generator
-            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
-            {
-                settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
-            });
 
             app.UseMvc();
         }
